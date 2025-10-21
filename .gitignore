@@ -137,6 +137,7 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+<<<<<<< HEAD
 # DynamoDB Local files
 .dynamodb/
 
@@ -161,3 +162,5 @@ vite.config.ts.timestamp-*
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+=======
+>>>>>>> 9b145de8a5333ab427877eccee564ff8025c2990
