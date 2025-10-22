@@ -5,10 +5,10 @@ const app = new Hono();
 import clerkAuth from "./controller/clerkAuth.js";
 import { api } from "../api.js";
 
-app.use("*", clerkMiddleware({}));
+// app.use("*", clerkMiddleware({}));
 
 app.get("/", (c) => {
-  clerkAuth(c);
+  // clerkAuth(c);
   return c.text("Hello Hono!");
 });
 
