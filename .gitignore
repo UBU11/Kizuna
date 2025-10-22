@@ -164,3 +164,11 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 =======
 >>>>>>> 9b145de8a5333ab427877eccee564ff8025c2990
+
+.nx/installation
+.nx/cache
+.nx/workspace-data
+
+
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md
