@@ -4,7 +4,7 @@ import type { AuthenticateRequestOptions } from '@clerk/backend/internal'
 import { TokenType } from '@clerk/backend/internal'
 import type { Context, MiddlewareHandler } from 'hono'
 import { env } from 'hono/adapter'
-import {api} from "../../api.ts"
+import {api} from "../../api.ts" // api keys are consider as object keys instead of a env file in this codebase, due to inconsitent of my env issues
 
 export type ClerkAuthVariables = {
   clerk: ClerkClient
