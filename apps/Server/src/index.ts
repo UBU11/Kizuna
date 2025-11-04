@@ -8,13 +8,23 @@ import { api } from "../api.js";
 app.use("*", clerkMiddleware({
   secretKey: api.CLERK_SECRET_KEY,
   publishableKey:api.CLERK_PUBLISHABLE_KEY,
+  apiVersion: "v1",
+  apiUrl: "https://api.clerk.com",
 }));
 
 app.get("/", async (c) => {
   const auth = c.get("clerk");
+  const {isAuthenticated, userId} = getAuth(c);
 
   try {
-    const user = await auth.users.getUser("user_id_....");
+    if(!isAuthenticated){
+      c.json({
+        message: "User is unauthenticated"
+      },
+    404
+  )
+    }
+    const user = await auth.users.getUser(userId!);
     console.log(user);
     return c.json({
       user,
