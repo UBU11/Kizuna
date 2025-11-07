@@ -1,2 +1,10 @@
-.turbo
-node_modules./
+# turbo repo
+*.turbo
+
+#dependencies
+.pnpm
+node_modules
+
+#output
+dist
+build
