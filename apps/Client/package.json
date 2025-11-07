@@ -33,6 +33,6 @@
     "overrides": {
       "vite": "npm:rolldown-vite@7.1.14"
     }
-  },
-  "nx": {}
+  }
+
 }
