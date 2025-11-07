@@ -1,0 +1,26 @@
+{
+  "name": "kizuna-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon --exec ts-node src/index.ts",
+    "build": "tsup src/index.ts --format esm --out-dir dist --clean",
+    "start": "node src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.18.2",
+  "dependencies": {
+    "fastify": "^5.6.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "tsup": "^8.5.0",
+    "typescript": "~5.9.3"
+  }
+}
