@@ -1,10 +1,14 @@
 import fastify from 'fastify'
+import dotenv from 'dotenv'
+dotenv.config()
+
 
 const server = fastify()
 
 server.get('/ping', async (request, reply) => {
   return 'pong\n'
 })
+
 
 server.listen({ port: 8080 }, (err, address) => {
   if (err) {
@@ -13,3 +17,5 @@ server.listen({ port: 8080 }, (err, address) => {
   }
   console.log(`Server listening at ${address}`)
 })
+
+
