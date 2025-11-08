@@ -1,27 +1,7 @@
-import dotenv from "dotenv";
-import { Pool } from "pg";
+import { drizzle } from "drizzle-orm/neon-http";
+import { neon } from "@neondatabase/serverless";
+import dotenv from "dotenv"
 dotenv.config();
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
-
-export const dbSetup = async () => {
-  const client = await pool.connect();
-  try {
-    console.log("Connection established");
-  } catch (err: any) {
-    console.error(
-      "Connection failed:",
-      err.stack,
-      "m error message:",
-      err.message
-    );
-
-    process.exit(1);
-
-  } finally {
-    client.release();
-  }
-};
-
+const sql = neon(process.env.DATABASE_URL!);
+export const db = drizzle({ client: sql });

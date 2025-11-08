@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 
+
 const server = fastify()
 
 server.get('/ping', async (request, reply) => {
