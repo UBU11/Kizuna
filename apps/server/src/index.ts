@@ -1,10 +1,19 @@
 import fastify from "fastify";
 import dotenv from "dotenv";
 import { auth } from "./lib/auth.ts";
-import { codec, json, undefined } from "better-auth";
+import { undefined } from "better-auth";
+import fastifyCors from "@fastify/cors";
 dotenv.config();
 
 const server = fastify({ logger: true });
+
+server.register(fastifyCors, {
+  origin: process.env.CLIENT_ORIGIN || "http://localhost:5173",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+  credentials: true,
+  maxAge: 86400,
+});
 
 server.get("/", async (request, reply) => {
   return "Welcome :)";
@@ -28,20 +37,19 @@ server.route({
         body: request.body ? JSON.stringify(request.body) : undefined,
       });
 
-      const response = await auth.handler(req)
+      const response = await auth.handler(req);
 
-      reply.status(response.status)
-      response.headers.forEach((value, key)=>{
-        reply.header(key,value)
-      })
-      reply.send(response.body ? await response.text() : null)
-    } catch (error:any) {
+      reply.status(response.status);
+      response.headers.forEach((value, key) => {
+        reply.header(key, value);
+      });
+      reply.send(response.body ? await response.text() : null);
+    } catch (error: any) {
       server.log.error("Authentication Error:", error);
       reply.status(500).send({
         error: "Internal authentication error",
-        code: "AUTH_FAILURE"
+        code: "AUTH_FAILURE",
       });
-
     }
   },
 });

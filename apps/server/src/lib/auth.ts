@@ -17,4 +17,6 @@ export const auth = betterAuth({
       clientKey: process.env?.GITHUB_CLIENT_SECRET as string,
     },
   },
+
+  trustedOrigins: ["http://localhost:3000", "http://localhost:8080", "http://localhost:5173"],
 });
