@@ -1,0 +1,20 @@
+import { betterAuth } from "better-auth";
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { db } from "../config/DB_Config.ts";
+import dotenv from "dotenv"
+dotenv.config()
+
+export const auth = betterAuth({
+  database: drizzleAdapter(db, {
+    provider: "pg",
+  }),
+  emailAndPassword: {
+    enabled: true,
+  },
+  socialProviders: {
+    github: {
+      clientId: process.env?.GITHUB_CLIENT_ID as string,
+      clientKey: process.env?.GITHUB_CLIENT_SECRET as string,
+    },
+  },
+});

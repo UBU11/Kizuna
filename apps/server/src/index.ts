@@ -6,6 +6,10 @@ dotenv.config()
 
 const server = fastify()
 
+server.get("/", async (request,reply)=>{
+  return "Welcome :)"
+})
+
 server.get('/ping', async (request, reply) => {
   return 'pong\n'
 })
