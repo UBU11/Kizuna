@@ -1,4 +1,4 @@
-import { undefined } from "better-auth";
+
 
 export default async function authProxyHandler(
   request: any,
@@ -17,7 +17,7 @@ export default async function authProxyHandler(
     const req = new Request(url.toString(), {
       method: request.method,
       headers,
-      body: request.body ? JSON.stringify(request.body) : undefined,
+      body: request.body ? JSON.stringify(request.body) : null,
     });
 
     const response = await auth.handler(req);

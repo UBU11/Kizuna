@@ -14,7 +14,7 @@ export default async function createProxyHandler(
       const req = new Request(url.toString(), {
         method: request.method,
         headers,
-        body: request.body ? JSON.stringify(request.body) : undefined,
+        body: request.body ? JSON.stringify(request.body) : null,
       });
       const response = await serviceHandler(req);
 
