@@ -4,12 +4,13 @@ import { auth } from "./lib/auth.ts";
 import authProxyHandler from "./handler/authProxyHandler.ts";
 import WSEngine from "./handler/wsEngine.ts";
 import fastifyCors from "@fastify/cors";
-import fastifyWebsocket from "@fastify/websocket";
+import websocket from "@fastify/websocket";
+
 dotenv.config();
 
 const server = fastify({ logger: true });
 
-server.register(fastifyWebsocket);
+server.register(websocket);
 
 server.register(fastifyCors, {
   origin: process.env.CLIENT_ORIGIN || "http://localhost:5173",
@@ -31,9 +32,14 @@ server.route({
   },
 });
 
-server.get("/ping", async (request, reply) => {
-  return "pong\n";
-});
+
+server.post("/login",async(request:any,reply)=>{
+    const data = request.body
+    console.log(data)
+    reply.code(200).send({message:"success",data:data})
+    return data
+
+})
 
  server.get("/ws", { websocket: true }, WSEngine);
 
