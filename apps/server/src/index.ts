@@ -5,7 +5,7 @@ import authProxyHandler from "./handler/authProxyHandler.ts";
 import WSEngine from "./handler/wsEngine.ts";
 import fastifyCors from "@fastify/cors";
 import websocket from "@fastify/websocket";
-import { Socket } from "dgram";
+// import wsRoutes from "./router/wsRoutes.ts"
 
 
 dotenv.config();
@@ -16,14 +16,11 @@ server.register(websocket, {
   options: { maxPayload: 1048576 },
 });
 
-server.register(
-  async function(server) {
-    server.get("/ws/*",{websocket:true},(socket,request)=>{
-      socket.on("message",()=>{
-        socket.send("Hello from wildcard router")
-      })
-    })
-  }
+server.register( async function (server:any) {
+
+  server.get("/ws/*", {websocket:true} , WSEngine)
+}
+
 );
 
 server.register(fastifyCors, {
