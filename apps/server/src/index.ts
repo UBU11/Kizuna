@@ -4,24 +4,24 @@ import { auth } from "./lib/auth.ts";
 import authProxyHandler from "./handler/authProxyHandler.ts";
 import WSEngine from "./handler/wsEngine.ts";
 import fastifyCors from "@fastify/cors";
-import websocket from "@fastify/websocket";
 // import wsRoutes from "./router/wsRoutes.ts"
-
 
 dotenv.config();
 
 const server = fastify({ logger: true });
 
-server.register(websocket, {
+await server.register(import("@fastify/static"), {
+  root: new URL("../public", import.meta.url).pathname,
+
+});
+
+await server.register(import("@fastify/websocket"), {
   options: { maxPayload: 1048576 },
 });
 
-server.register( async function (server:any) {
-
-  server.get("/ws/*", {websocket:true} , WSEngine)
-}
-
-);
+server.register(async function (server: any) {
+  server.get("/ws", { websocket: true }, WSEngine);
+});
 
 server.register(fastifyCors, {
   origin: process.env.CLIENT_ORIGIN || "http://localhost:5173",
@@ -31,8 +31,8 @@ server.register(fastifyCors, {
   maxAge: 86400,
 });
 
-server.get("/home", async (request, reply) => {
-  return "Welcome :)";
+server.get("/", async (request, reply) => {
+  return reply.sendFile("index.html")
 });
 
 server.route({
@@ -45,20 +45,20 @@ server.route({
 
 server.post("/login", async (request: any, reply) => {
   const data = request.body;
-  console.log(data);
+  server.log.info(data);
   reply.code(200).send({ message: "success", data: data });
   return data;
 });
 
 // server.get("/ws", { websocket: true }, (socket,request)=>{
-  // socket.on("message",()=>{
-    // socket.send("Hello from wildcard from single router")
-  // })
+// socket.on("message",()=>{
+// socket.send("Hello from wildcard from single router")
+// })
 // });
 
-server.listen({ port: 8080 }, (err, address) => {
+server.listen({ port: 8080 , host: "0.0.0.0"},(err:any, address) => {
   if (err) {
-    console.error(err);
+   server.log.error("Error starting server",err)
     process.exit(1);
   }
   console.log(`Server listening at ${address}`);
