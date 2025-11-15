@@ -35,5 +35,3 @@ This project is currently **under active development**. Features, structure and 
 - Privacy-focused access control for students only
 
 ---
-
-## 📁 Project Structure (Work in Progress)
