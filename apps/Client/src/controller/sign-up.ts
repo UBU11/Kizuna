@@ -1,4 +1,4 @@
-import { authClient } from "../lib/auth-client.ts";
+import { authClient } from "../lib/auth/auth-client.ts";
 import { useNavigate } from "react-router-dom";
 
 type User = {
