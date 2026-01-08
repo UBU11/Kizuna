@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { db } from "../config/DB_Config.ts";
+import { db } from "../../config/DB_Config.ts";
 import dotenv from "dotenv"
 dotenv.config()
 
@@ -21,3 +21,4 @@ export const auth = betterAuth({
 
   trustedOrigins: ["http://localhost:3000", "http://localhost:8080", "http://localhost:5173"],
 });
+

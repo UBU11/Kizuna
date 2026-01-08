@@ -1,5 +1,5 @@
-import WSEngine from "../handler/wsEngine.ts";
+// import WSEngine from "../handler/WS-Handler.ts";
 
-export default async function wsRoutes(server: any) {
-  server.get("/", { WebSocket: true }, WSEngine);
-}
+// export default async function wsRoutes(server: any) {
+//   server.get("/", { WebSocket: true }, WSEngine);
+// }

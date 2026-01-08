@@ -1,3 +1,4 @@
+
 import Fastify from 'fastify';
 
 const fastify = Fastify({
@@ -7,9 +8,11 @@ const fastify = Fastify({
 
 await fastify.register(import('@fastify/websocket'));
 
+export default async function WShandler(server:any) {
 
+}{
 fastify.register(async function (fastify) {
-    fastify.get('/websocket', { websocket: true }, (connection, request) => {
+    fastify.get('/', { websocket: true }, (connection, request) => {
         const clientIP = request.socket.remoteAddress;
         console.log(`Client connected from ${clientIP}`);
 
@@ -40,8 +43,4 @@ fastify.register(async function (fastify) {
     });
 });
 
-const PORT = process.env.PORT || 3000;
-
-fastify.listen({
-  port:PORT
-})
+}

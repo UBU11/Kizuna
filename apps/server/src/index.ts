@@ -1,21 +1,38 @@
 import fastify from "fastify";
 import dotenv from "dotenv";
-import { auth } from "@/lib/auth.ts";
+import { auth } from "./lib/auth/auth.ts";
 import authProxyHandler from "./handler/authProxyHandler.ts";
 import fastifyCors from "@fastify/cors";
-import { addAbortListener } from "events";
+import {
+  serializerCompiler,
+  validatorCompiler,
+} from "fastify-type-provider-zod";
+import WShandler from "./handler/WS-Handler.ts";
+import { neon } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/neon-http';
+import { z } from "zod/v4";
+import type { ZodTypeProvider } from "fastify-type-provider-zod";
+
 
 dotenv.config();
 
+const sql = neon(process.env.DATABASE_URL!);
+const db = drizzle({ client: sql });
+
 const server = fastify({ logger: true });
 
-const response = await auth.api.signInEmail({
-  body: {
-    email,
-    password,
-  },
-  asResponse: true,
-});
+await server.register(import("@fastify/websocket"));
+
+server.setValidatorCompiler(validatorCompiler);
+server.setSerializerCompiler(serializerCompiler);
+
+// const response = await auth.api.signInEmail({
+//   body: {
+//     email,
+//     password,
+//   },
+//   asResponse: true,
+// });
 
 server.register(fastifyCors, {
   origin: process.env.CLIENT_ORIGIN || "http://localhost:5173",
@@ -32,6 +49,8 @@ server.route({
     await authProxyHandler(request, reply, server, auth);
   },
 });
+
+server.register(WShandler, { prefix: "websocket" });
 
 server.get("/check", async (request: any, reply) => {
   const session = await auth.api.getSession({
