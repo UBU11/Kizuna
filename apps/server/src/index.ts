@@ -8,11 +8,11 @@ import {
   validatorCompiler,
 } from "fastify-type-provider-zod";
 import WShandler from "./handler/WS-Handler.ts";
-import { neon } from '@neondatabase/serverless';
-import { drizzle } from 'drizzle-orm/neon-http';
+import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
 import { z } from "zod/v4";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
-
+import { json } from "stream/consumers";
 
 dotenv.config();
 
@@ -25,14 +25,6 @@ await server.register(import("@fastify/websocket"));
 
 server.setValidatorCompiler(validatorCompiler);
 server.setSerializerCompiler(serializerCompiler);
-
-// const response = await auth.api.signInEmail({
-//   body: {
-//     email,
-//     password,
-//   },
-//   asResponse: true,
-// });
 
 server.register(fastifyCors, {
   origin: process.env.CLIENT_ORIGIN || "http://localhost:5173",
@@ -47,8 +39,25 @@ server.route({
   url: "/api/auth/*",
   async handler(request, reply) {
     await authProxyHandler(request, reply, server, auth);
+
+
   },
 });
+
+
+server.post("/api/auth/sign-up/email",async(request,reply)=>{
+
+  const {name,email,password} = request.body
+
+    const data = await auth.api.signUpEmail({
+      body: {
+        name:name,
+        email:email,
+        password:password,
+      },
+      asResponse: true,
+    });
+})
 
 server.register(WShandler, { prefix: "websocket" });
 
