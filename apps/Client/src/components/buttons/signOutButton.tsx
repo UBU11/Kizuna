@@ -1,10 +1,16 @@
 import { authClient } from "@/lib/auth/auth-client";
-import { useEffect } from "react";
+import { AuthLoading } from "@daveyplate/better-auth-ui";
+
 
 export default async function SignOutButton() {
   const { data: session, error, isPending } = authClient.useSession();
 
-  if (isPending) return <div>Loading....</div>;
+  if (isPending)
+    return (
+      <AuthLoading>
+        <div>Loading....</div>
+      </AuthLoading>
+    );
   if (error) return <div> Error: {error.message}</div>;
 
   return (
