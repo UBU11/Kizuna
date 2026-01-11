@@ -1,11 +1,16 @@
 import { authClient } from "@/lib/auth/auth-client";
+import { useEffect } from "react";
 
 export default async function SignOutButton() {
-  const onClick = await authClient.signOut({
-    fetchOptions: {
-      onSuccess: () => console.log("login"), //redicect to login page
-    },
-  });
+  const { data: session, error, isPending } = authClient.useSession();
 
-  return <div>signOutButton</div>;
+  if (isPending) return <div>Loading....</div>;
+  if (error) return <div> Error: {error.message}</div>;
+
+  return (
+    <div className="">
+      <p className="">Welcome: {session?.user.name}</p>
+      <button onClick={() => authClient.signOut}>Logout</button>
+    </div>
+  );
 }
