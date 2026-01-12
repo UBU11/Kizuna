@@ -6,7 +6,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
 
   return (
-    <AuthUIProvider authClient={authClient} navigate={navigate} Link={NavLink}>
+    <AuthUIProvider authClient={authClient} navigate={navigate} Link={NavLink} social={{providers:["github","google"]}}>
       {children}
     </AuthUIProvider>
   );
