@@ -11,7 +11,6 @@ import { drizzle } from "drizzle-orm/neon-http";
 import { z } from "zod/v4";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
 
-
 dotenv.config();
 
 const sql = neon(process.env.DATABASE_URL!);
@@ -32,27 +31,7 @@ server.register(fastifyCors, {
   maxAge: 86400,
 });
 
-// server.route({
-//   method: ["GET", "POST"],
-//   url: "/api/auth/*",
-//   async handler(request, reply) {
-//     await authProxyHandler(request, reply, server, auth);
-
-
-//   },
-// });
-
-
-// server.get("/check", async (request: any, reply) => {
-//   const session = await auth.api.getSession({
-//     headers: request.raw.headers,
-//   });
-// });
-
-
-
 server.register(WShandler, { prefix: "websocket" });
-
 
 server.listen({ port: 8080, host: "0.0.0.0" }, (err: any, address) => {
   if (err) {
