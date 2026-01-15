@@ -10,11 +10,13 @@ import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import { z } from "zod/v4";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
+import { userRoutes } from "./router/user.route.ts";
 
 dotenv.config();
 
 const sql = neon(process.env.DATABASE_URL!);
 const db = drizzle({ client: sql });
+
 
 const server = fastify({ logger: true });
 
@@ -22,6 +24,8 @@ await server.register(import("@fastify/websocket"));
 
 server.setValidatorCompiler(validatorCompiler);
 server.setSerializerCompiler(serializerCompiler);
+
+server.register(userRoutes,{prefix:'api/users'})
 
 server.register(fastifyCors, {
   origin: process.env.CLIENT_ORIGIN || "http://localhost:5173",
@@ -32,6 +36,25 @@ server.register(fastifyCors, {
 });
 
 server.register(WShandler, { prefix: "websocket" });
+
+
+server.get("/healthcheck",()=>{
+  return {
+    Message: 'success'
+  }
+})
+
+
+const listner = ["SIGINT","SIGTERM"]
+
+listner.forEach((signal)=>{
+  process.on(signal,async()=>{
+    await server.close()
+    process.exit(0)
+  })
+})
+
+
 
 server.listen({ port: 8080, host: "0.0.0.0" }, (err: any, address) => {
   if (err) {
