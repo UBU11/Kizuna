@@ -8,9 +8,8 @@ import {
 import WShandler from "./handler/WS-Handler.ts";
 import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
-import { z } from "zod/v4";
-import type { ZodTypeProvider } from "fastify-type-provider-zod";
 import { userRoutes } from "./router/user.route.ts";
+// import {userSchemas} from "./types/user.d.ts"
 
 dotenv.config();
 
@@ -23,9 +22,8 @@ const server = fastify({ logger: true });
 await server.register(import("@fastify/websocket"));
 
 server.setValidatorCompiler(validatorCompiler);
-server.setSerializerCompiler(serializerCompiler);
 
-server.register(userRoutes,{prefix:'api/users'})
+server.setSerializerCompiler(serializerCompiler);
 
 server.register(fastifyCors, {
   origin: process.env.CLIENT_ORIGIN || "http://localhost:5173",
@@ -34,6 +32,8 @@ server.register(fastifyCors, {
   credentials: true,
   maxAge: 86400,
 });
+
+server.register(userRoutes,{prefix:'api/users'})
 
 server.register(WShandler, { prefix: "websocket" });
 
@@ -45,14 +45,16 @@ server.get("/healthcheck",()=>{
 })
 
 
-const listner = ["SIGINT","SIGTERM"]
+const listeners = ["SIGINT","SIGTERM"]
 
-listner.forEach((signal)=>{
+listeners.forEach((signal)=>{
   process.on(signal,async()=>{
     await server.close()
     process.exit(0)
   })
 })
+
+
 
 
 

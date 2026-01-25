@@ -1,19 +1,40 @@
-import type { FastifyInstance , FastifyRequest, FastifyReply } from "fastify";
+import { $ref, loginResponsesSchema } from "@/types/user.js";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 
-
-export async function userRoutes(server: FastifyInstance): Promise<void>{
-
-  server.get('/',(req:FastifyRequest, reply: FastifyReply)=>{
+export async function userRoutes(server: FastifyInstance): Promise<void> {
+  server.get("/", (req: FastifyRequest, reply: FastifyReply) => {
     reply.send({
-      message:"route hit"
-    })
-  })
+      message: "route hit",
+    });
+  });
 
-  server.post("/register",()=>{})
+  server.post(
+    "/register",
+    {
+      schema: {
+        body: $ref("createUserSchema"),
+        response: {
+          201: $ref("createUserResponseSchema"),
+        },
+      },
+    },
+    () => {},
+  );
 
-  server.post("/login",()=>{})
+  server.post(
+    "/login",
+    {
+      schema: {
+        body: $ref("loginSchema"),
+        response: {
+          201: $ref("loginResponsesSchema"),
+        },
+      },
+    },
+    () => {},
+  );
 
-  server.delete("/logout",()=>{})
+  server.delete("/logout", () => {});
 
-  server.log.info('user route registered')
+  server.log.info("user route registered");
 }
