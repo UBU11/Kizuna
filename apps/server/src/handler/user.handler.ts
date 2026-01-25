@@ -13,6 +13,8 @@ const db = drizzle({ client: sql });
 
 const saltRound = 12;
 
+
+
 export async function createUser(
   req: FastifyRequest<{
     Body: createUserInput;
@@ -42,6 +44,6 @@ export async function createUser(
       .returning({ insertedId: user.id })
       .onConflictDoNothing({ target: user.id });
   } catch (error) {
-    return reply.code(500).send(error)
+    return reply.code(500).send(`error: ${error}`)
   }
 }

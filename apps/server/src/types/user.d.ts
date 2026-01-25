@@ -1,9 +1,7 @@
-import { email, z } from "zod";
+import {  z } from "zod";
 import { buildJsonSchemas } from "fastify-zod";
-import type { P } from "node_modules/better-auth/dist/shared/better-auth.BUpnjBGu.js";
-import type { passkey } from "better-auth/plugins/passkey";
-import type { access } from "fs";
-import type { createSchema } from "better-auth/client";
+import type fastify from "fastify";
+
 
 const createUserSchema = z.object({
   email: z.string(),
@@ -41,3 +39,5 @@ export const { schemas: userSchemas, $ref } = buildJsonSchemas({
   loginSchema,
   loginResponsesSchema,
 });
+
+

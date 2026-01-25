@@ -6,24 +6,21 @@ import {
   validatorCompiler,
 } from "fastify-type-provider-zod";
 import WShandler from "./handler/WS-Handler.ts";
-import { neon } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
 import { userRoutes } from "./router/user.route.ts";
-// import {userSchemas} from "./types/user.d.ts"
+import { userSchemas } from "./types/user.d.ts";
+
 
 dotenv.config();
-
-const sql = neon(process.env.DATABASE_URL!);
-const db = drizzle({ client: sql });
 
 
 const server = fastify({ logger: true });
 
 await server.register(import("@fastify/websocket"));
 
-server.setValidatorCompiler(validatorCompiler);
+userSchemas.forEach(schema => {
+  server.addSchema(schema)
+})
 
-server.setSerializerCompiler(serializerCompiler);
 
 server.register(fastifyCors, {
   origin: process.env.CLIENT_ORIGIN || "http://localhost:5173",
@@ -53,6 +50,9 @@ listeners.forEach((signal)=>{
     process.exit(0)
   })
 })
+
+
+ console.log(server.getSchemas())
 
 
 

@@ -1,5 +1,6 @@
-import { $ref, loginResponsesSchema } from "@/types/user.js";
+import { $ref } from "../types/user.d.ts";
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import { createUser } from "../handler/user.handler.ts";
 
 export async function userRoutes(server: FastifyInstance): Promise<void> {
   server.get("/", (req: FastifyRequest, reply: FastifyReply) => {
@@ -18,7 +19,7 @@ export async function userRoutes(server: FastifyInstance): Promise<void> {
         },
       },
     },
-    () => {},
+    createUser
   );
 
   server.post(
@@ -31,7 +32,7 @@ export async function userRoutes(server: FastifyInstance): Promise<void> {
         },
       },
     },
-    () => {},
+  ()=>{}
   );
 
   server.delete("/logout", () => {});
