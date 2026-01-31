@@ -7,17 +7,18 @@ import {
 } from "fastify-type-provider-zod";
 import WShandler from "./handler/WS-Handler.ts";
 import { userRoutes } from "./router/user.route.ts";
-import { userSchemas } from "./types/user.d.ts";
+import type { ZodTypeProvider } from "fastify-type-provider-zod";
+import { schemas } from "./types/user.d.ts";
 
 
 dotenv.config();
 
 
-const server = fastify({ logger: true });
+const server = fastify({ logger: true }).withTypeProvider<ZodTypeProvider>();
 
 await server.register(import("@fastify/websocket"));
 
-userSchemas.forEach(schema => {
+schemas.forEach(schema => {
   server.addSchema(schema)
 })
 

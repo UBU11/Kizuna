@@ -1,5 +1,5 @@
 import {  z } from "zod";
-import { buildJsonSchemas } from "fastify-zod";
+import { buildJsonSchemas} from "fastify-zod";
 import type fastify from "fastify";
 
 
@@ -33,11 +33,18 @@ const loginResponsesSchema = z.object({
   accessToken: z.string(),
 });
 
-export const { schemas: userSchemas, $ref } = buildJsonSchemas({
+
+const models = {
   createUserSchema,
   createUserResponseSchema,
   loginSchema,
   loginResponsesSchema,
+
+}
+
+export const { schemas, $ref } = buildJsonSchemas( models,{
+  $id:"myapplications"
 });
+
 
 
